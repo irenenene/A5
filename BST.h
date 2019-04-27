@@ -3,18 +3,28 @@
 
 #include <iostream>
 
+using namespace std;
+
 template <class T>
 class Node {
 public:
   //Node();
   Node(T d):data(d), parent(NULL), left(NULL), right(NULL) {};
-  virtual ~Node();
+  //virtual ~Node();
 
   T data;
   Node<T> *parent;
   Node<T> *left;
   Node<T> *right;
 };
+
+/*
+template <class T>
+Node<T>::~Node() {
+  parent = NULL;
+  left = NULL;
+  right = NULL;
+}*/
 
 template <class T>
 class BST {
@@ -30,7 +40,8 @@ public:
   bool contains(T d);
   Node<T>* getSuccessor(Node<T> *d); //returns left-most child of right subtree
   Node<T>* getNode(T d);
-  //printTree
+  void recursivePrint(Node<T>* curr);
+  void printTree();
 
 private:
   Node<T> *root;
@@ -46,7 +57,7 @@ BST<T>::~BST() {
   //call recursive delete starting from root
   if(!isEmpty())
     recursiveDelete(root);
-  std::cout << "Deleting the tree" << std::endl;
+  cout << "Deleting the tree" << endl;
 }
 
 template <class T>
@@ -222,6 +233,22 @@ bool BST<T>::deleteNode(T d) {
     delete delNode;
     return true;
   }
+}
+
+template <class T>
+void BST<T>::recursivePrint(Node<T>* c) { //in order
+  Node<T>* curr = c;
+
+  if(curr != NULL) {
+    recursivePrint(curr->left);
+    cout << curr->data << endl;
+    recursivePrint(curr->right);
+  }
+}
+
+template <class T>
+void BST<T>::printTree() {
+  recursivePrint(root);
 }
 
 #endif
