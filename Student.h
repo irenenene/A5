@@ -12,7 +12,7 @@ public:
   Student(int i);
   Student(string n, int i, string l, string m, double g, int aID);
 //  ~Student();
-  string getInfo();
+  string getInfo() const;
 
   int id;
   string level;
@@ -39,6 +39,10 @@ public:
   friend bool operator>= (const Student &studentOne, const Student &studentTwo) {
     return studentOne.id >= studentTwo.id;
   }
+  friend ostream& operator<< (ostream &out, const Student &s) {
+    out << s.getInfo();
+    return out;
+  };
 
 };
 

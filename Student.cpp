@@ -29,7 +29,7 @@ Student::~Student() {
 
 }*/
 
-string Student::getInfo() {
+string Student::getInfo() const {
   string retString = "";
   retString = "ID: " + to_string(id) + " - " +
               "Name: " + name + " - " +
