@@ -11,9 +11,9 @@ public:
   virtual ~Node();
 
   T data;
-  Node *parent;
-  Node *left;
-  Node *right;
+  Node<T> *parent;
+  Node<T> *left;
+  Node<T> *right;
 };
 
 template <class T>
@@ -22,16 +22,15 @@ public:
   BST();
   ~BST();
 
-  //insert
   bool insert(T d);
-  //getsuccessor
-  //delete
-
+  bool deleteNode(T d);
   //helper methods
   bool isEmpty();
   void recursiveDelete(Node<T> *curr);
-  //printTree
   bool contains(T d);
+  Node<T>* getSuccessor(Node<T> *d); //returns left-most child of right subtree
+  Node<T>* getNode(T d);
+  //printTree
 
 private:
   Node<T> *root;
@@ -99,27 +98,130 @@ bool BST<T>::insert(T d) {
   }
 
   Node<T> *curr = root;
-  Node<T> *parent;
+  Node<T> *par;
 
   while(true) {
-    parent = curr;
+    par = curr;
     if(d < curr->data) {
       curr = curr->left;
       if (curr == NULL)  {
-        parent->left = newNode;
+        par->left = newNode;
+        newNode->parent = par;
         return true;
       }
     }
     else {
       curr = curr->right;
       if(curr == NULL) {
-        parent->right = newNode;
+        par->right = newNode;
+        newNode->parent = par;
         return true;
       }
     }
   }
+}
 
+//this method already assumes that d will have both children
+template <class T>
+Node<T>* BST<T>::getSuccessor(Node<T>* d) { //where d is the node to be deleted
+  Node<T> *par = d;
+  Node<T> *successor = d;
+  Node<T> *curr = d->right;
 
+  while(curr != NULL) {
+    par = successor;
+    successor = curr;
+    curr = curr->left;
+  }
+
+  if(successor != d->right) {
+    par->left = successor->right;
+    successor->right = d->right;
+  }
+
+  return successor;
+}
+
+template <class T>
+Node<T>* BST<T>::getNode(T d) {
+  if(contains(d)) {
+    Node<T>* curr = root;
+
+    while (curr->data != d) {
+      if (d < curr->data) {
+        curr = curr->left;
+      }
+      else
+      {
+        curr = curr->right;
+      }
+    }
+
+    return curr;
+  }
+  else {
+    return nullptr;
+  }
+}
+
+template <class T>
+bool BST<T>::deleteNode(T d) {
+  Node<T>* delNode = getNode(d);
+  if (delNode == nullptr) {
+    return false;
+  }
+  else { //start here
+    //if leaf node
+    if(!delNode->left && !delNode->right) {
+      if(delNode == root) //if they are pointing to the same place
+        root = NULL;
+      else if(delNode->parent->left == delNode) //else if delNode is the left child
+        delNode->parent->left == NULL;
+      else
+        delNode->parent->right == NULL;
+    }
+    //one child
+    else if (delNode->right == NULL) {
+      if(delNode == root)
+        root = delNode->left;
+      else if(delNode->parent->left == delNode)
+        delNode->parent->left = delNode->left;
+      else
+        delNode->parent->right = delNode->left;
+
+      delNode->left->parent = delNode->parent; //update parent pointer
+    }
+    else if(delNode->left == NULL) {
+      if(delNode == root)
+        root->right = delNode->right;
+      else if(delNode->parent->left == delNode)
+        delNode->parent->left = delNode->right;
+      else
+        delNode->parent->right = delNode->right;
+
+      delNode->right->parent = delNode->parent;
+    }
+    //two children
+    else {
+      Node<T>* successor = getSuccessor(delNode);
+
+      if(delNode == root)
+        root = successor;
+      else if (delNode->parent->left == delNode)
+        delNode->parent->left = successor;
+      else
+        delNode->parent->right = successor;
+
+      successor->left = delNode->left;
+
+      //update parent pointers
+      successor->left->parent = successor;
+      successor->right->parent = successor;
+    }
+
+    delete delNode;
+    return true;
+  }
 }
 
 #endif
