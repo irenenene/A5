@@ -14,7 +14,7 @@ public:
 //  ~Student();
   string getInfo() const;
 
-  int id;
+  int id; //can probably move this to person class
   string level;
   string major;
   double gpa;

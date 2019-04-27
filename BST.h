@@ -10,7 +10,7 @@ class Node {
 public:
   //Node();
   Node(T d):data(d), parent(NULL), left(NULL), right(NULL) {};
-  //virtual ~Node();
+  virtual ~Node();
 
   T data;
   Node<T> *parent;
@@ -18,13 +18,12 @@ public:
   Node<T> *right;
 };
 
-/*
 template <class T>
 Node<T>::~Node() {
   parent = NULL;
   left = NULL;
   right = NULL;
-}*/
+}
 
 template <class T>
 class BST {
