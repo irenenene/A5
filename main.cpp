@@ -27,10 +27,15 @@ int main(int argc, char** args) {
   Bob.advisees.remove(55);
   cout << "after remove: " << Bob.getInfo() << endl;
 
+  Adam.advisorID = 666;
+
   db.masterFaculty.insert(Bob);
   db.masterFaculty.insert(Alice);
   db.masterStudent.insert(Adam);
   db.masterStudent.insert(Arry);
-  db.mainMenu();
+  while(!db.isDone){
+    db.mainMenu();
+  }
+
 
 }

@@ -7,6 +7,7 @@ using namespace std;
 
 Database::Database() {
   //initialize();
+  isDone = false;
 }
 
 void Database::initialize() {
@@ -29,6 +30,7 @@ void Database::initialize() {
 }
 
 void Database::displayMenu() {
+  cout << "-----Main Menu-----" << endl;
   cout << "1. Print all students and their information." << endl;
   cout << "2. Print all faculty and their information." << endl;
   cout << "3. Find and display student information" << endl;
@@ -53,6 +55,16 @@ void Database::findStudent() {
   try {
     int id = stoi(userInput); //note this can extract a number even if followed by a string, but not vice versa.
 
+    Student *found = findBySID(id);
+    if(found != NULL) {
+      cout << "Found a student with id: " << id << endl;
+      cout << *found << endl;
+    }
+    else {
+      cout << "Could not find a student with id: " << id << endl;
+    }
+
+    /* OLD VERSION
     Node<Student> *result = masterStudent.getNode(Student(id));
     if(result != NULL) {
       cout << "Found a student with id: " << id << endl;
@@ -60,6 +72,7 @@ void Database::findStudent() {
     }
     else
       cout << "Could not find a student with id: " << id << endl;
+    */
   }
   catch (const invalid_argument &e) {
     cout << "You did not enter a valid number." << endl;
@@ -74,23 +87,79 @@ void Database::findFaculty() {
   try {
     int id = stoi(userInput); //note this can extract a number even if followed by a string, but not vice versa.
 
-    Node<Faculty> *result = masterFaculty.getNode(Faculty(id));
-    if(result != NULL) {
+    Faculty *found = findByFID(id);
+    if(found != NULL) {
       cout << "Found a faculty member with id: " << id << endl;
-      cout << result->data << endl;
+      cout << *found << endl;
     }
-    else
+    else {
       cout << "Could not find a faculty member with id: " << id << endl;
+    }
   }
   catch (const invalid_argument &e) {
     cout << "You did not enter a valid number." << endl;
   }
 }
 
+Student* Database::findBySID(int i) {
+  Node<Student> *result = masterStudent.getNode(Student(i));
+  if(result != NULL) {
+    return &result->data;
+  }
+  else
+    return nullptr;
+}
+
+Faculty* Database::findByFID(int i) {
+  Node<Faculty> *result = masterFaculty.getNode(Faculty(i));
+  if(result != NULL) {
+    return &result->data;
+  }
+  else
+    return nullptr;
+}
+
+void Database::findAdvisor() {
+  string userInput;
+  cout << "Enter a student ID number: ";
+  getline(cin, userInput);
+
+  try {
+    int sID = stoi(userInput);
+
+    Student* advisee = findBySID(sID);
+    if(advisee != NULL) {
+      if(advisee->advisorID > 0) { //if valid facultyID
+        int fID = advisee->advisorID;
+        Faculty* advisor = findByFID(fID);
+
+        if(advisor != NULL) {
+          cout << "Found the advisor for student ID: " << sID << endl;
+          cout << *advisor << endl;
+        }
+        else {
+          cout << "The advisor for that student was not found." << endl;
+        }
+      }
+      else {
+        cout << "That student does not have an advisor." << endl;
+      }
+    }
+    else {
+      cout << "Student not found." << endl;
+    }
+  }
+  catch (const invalid_argument &e) {
+    cout << "You did not enter a valid number." << endl;
+  }
+}
+
+
 void Database::mainMenu() {
   displayMenu();
 
   string userInput;
+  cout << "Enter the number corresponding to your choice: ";
   getline(cin, userInput);
 
   if(userInput == "1") {
@@ -106,5 +175,11 @@ void Database::mainMenu() {
   }
   else if(userInput == "4") {
     findFaculty();
+  }
+  else if(userInput == "5") {
+    findAdvisor();
+  }
+  else if(userInput == "14") {
+    isDone = true;
   }
 }

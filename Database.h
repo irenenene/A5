@@ -23,6 +23,12 @@ public:
   void mainMenu();
   void findStudent();
   void findFaculty();
+  void findAdvisor();
+
+  //helper methods utilizing the BST search
+  Student* findBySID(int i);
+  Faculty* findByFID(int i);
+  bool isDone;
 };
 
 #endif
