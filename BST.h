@@ -33,12 +33,11 @@ public:
 
   bool insert(T d);
   bool deleteNode(T d);
-  //helper methods
   bool isEmpty();
   void recursiveDelete(Node<T> *curr);
   bool contains(T d);
   Node<T>* getSuccessor(Node<T> *d); //returns left-most child of right subtree
-  Node<T>* getNode(T d);
+  Node<T>* getNode(T d); //assumes that when we search we have an anonymous object with key we are looking for
   void recursivePrint(Node<T>* curr);
   void printTree();
 
