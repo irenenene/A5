@@ -8,6 +8,7 @@ class IntNode {
 public:
   IntNode();
   IntNode(int d);
+  IntNode(IntNode& other);
   ~IntNode();
 
   int data;

@@ -5,11 +5,12 @@
 
 using namespace std;
 
+//NODE CLASS BEGIN
 template <class T>
 class Node {
 public:
   //Node();
-  Node(T d):data(d), parent(NULL), left(NULL), right(NULL) {};
+  Node(T& d):data(d), parent(NULL), left(NULL), right(NULL) {};
   virtual ~Node();
 
   T data;
@@ -24,20 +25,22 @@ Node<T>::~Node() {
   left = NULL;
   right = NULL;
 }
+//NODE CLASS END
 
+//BST CLASS BEGIN
 template <class T>
 class BST {
 public:
   BST();
   ~BST();
 
-  bool insert(T d);
-  bool deleteNode(T d);
+  bool insert(T& d);
+  bool deleteNode(T& d);
   bool isEmpty();
   void recursiveDelete(Node<T> *curr);
-  bool contains(T d);
+  bool contains(T& d);
   Node<T>* getSuccessor(Node<T> *d); //returns left-most child of right subtree
-  Node<T>* getNode(T d); //assumes that when we search we have an anonymous object with key we are looking for
+  Node<T>* getNode(T& d);
   void recursivePrint(Node<T>* curr);
   void printTree();
 
@@ -75,7 +78,7 @@ void BST<T>::recursiveDelete(Node<T> *curr) {
 }
 
 template <class T>
-bool BST<T>::contains(T d) {
+bool BST<T>::contains(T& d) {
   if(isEmpty())
     return false;
 
@@ -95,12 +98,13 @@ bool BST<T>::contains(T d) {
 }
 
 template <class T>
-bool BST<T>::insert(T d) {
+bool BST<T>::insert(T& d) {
+  cout << "inserting" << endl;
   if (contains(d))
     return false;
 
-  Node<T> *newNode = new Node<T>(d);
-
+  Node<T> *newNode = new Node<T>(d); //here*********
+  cout << "after new Node" << endl;
   if(isEmpty()) {
     root = newNode;
     return true;
@@ -152,7 +156,7 @@ Node<T>* BST<T>::getSuccessor(Node<T>* d) { //where d is the node to be deleted
 }
 
 template <class T>
-Node<T>* BST<T>::getNode(T d) {
+Node<T>* BST<T>::getNode(T& d) {
   if(contains(d)) {
     Node<T>* curr = root;
 
@@ -174,7 +178,7 @@ Node<T>* BST<T>::getNode(T d) {
 }
 
 template <class T>
-bool BST<T>::deleteNode(T d) {
+bool BST<T>::deleteNode(T& d) {
   Node<T>* delNode = getNode(d);
   if (delNode == nullptr) {
     return false;

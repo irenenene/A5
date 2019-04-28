@@ -11,11 +11,14 @@ class IntList {
 public:
   IntList();
   ~IntList();
+  IntList( IntList& other);
   bool isEmpty();
   void insert(int d);
   void remove(int d);
 
   IntNode* start;
   int size;
+
+  IntList& operator=(IntList& other);
 };
 #endif

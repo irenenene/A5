@@ -9,13 +9,17 @@
 using namespace std;
 
 int main(int argc, char** args) {
-//  BST<Student> masterStudent;
-//  BST<Faculty> masterFaculty;
   Database db;
 
-
+  //BEGIN TEST
   Faculty Bob (1234);
-  Faculty Alice (666);
+  Bob.advisees.insert(55);
+  Bob.advisees.insert(48);
+  cout << Bob.getInfo();
+  Bob.advisees.remove(55);
+  db.masterFaculty.insert(Bob);
+  cout << Bob.getInfo();
+/*  Faculty Alice (666);
   Student Adam (55);
   Student Arry (5555);
 
@@ -24,15 +28,16 @@ int main(int argc, char** args) {
 
   Bob.advisees.insert(55);
   cout << Bob.getInfo() << endl;
-  Bob.advisees.remove(55);
-  cout << "after remove: " << Bob.getInfo() << endl;
+  //Bob.advisees.remove(55);
+  //cout << "after remove: " << Bob.getInfo() << endl;
 
   Adam.advisorID = 666;
 
   db.masterFaculty.insert(Bob);
-  db.masterFaculty.insert(Alice);
+/*  db.masterFaculty.insert(Alice);
   db.masterStudent.insert(Adam);
   db.masterStudent.insert(Arry);
+*/
   while(!db.isDone){
     db.displayMenu();
     db.mainMenu();

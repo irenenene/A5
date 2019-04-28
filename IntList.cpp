@@ -3,12 +3,12 @@
 using namespace std;
 
 IntList::IntList() {
-  start = NULL;
+  start = nullptr;
   size = 0;
 }
 
 IntList::~IntList() {
-  if(!isEmpty()) {
+/*  if(!isEmpty()) {
     IntNode *curr = start;
 
     while (curr != NULL) {
@@ -16,7 +16,47 @@ IntList::~IntList() {
       curr = curr->next;
       delete temp;
     }
+  }*/
+  delete start;
+}
+
+IntList::IntList(IntList& other) {
+  size = other.size;
+  if (size > 0) {
+    IntNode* otherCurr = other.start;
+    start = new IntNode(otherCurr->data);
+    IntNode* curr = start;
+
+    while(otherCurr->next != NULL) {
+      curr->next = new IntNode(otherCurr->next->data);
+      otherCurr = otherCurr->next;
+      curr = curr->next;
+    }
   }
+  else
+    start = nullptr;
+}
+
+IntList& IntList::operator=(IntList& other) {
+  if(!isEmpty()) //clear the list so we can make a new one
+    delete start;
+
+    size = other.size;
+    if (size > 0) {
+      IntNode* otherCurr = other.start;
+      start = new IntNode(otherCurr->data);
+      IntNode* curr = start;
+
+      while(otherCurr->next != NULL) {
+        curr->next = new IntNode(otherCurr->next->data);
+        otherCurr = otherCurr->next;
+        curr = curr->next;
+      }
+    }
+    else
+      start = nullptr;
+
+    return *this;
 }
 
 bool IntList::isEmpty() {
@@ -27,7 +67,7 @@ void IntList::insert(int d) {
   IntNode *newNode = new IntNode(d);
 
   if(!isEmpty()) {
-    newNode->next = start->next;
+    newNode->next = start;
   }
   start = newNode;
   size++;

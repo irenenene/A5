@@ -62,16 +62,6 @@ void Database::findStudent() {
     }
     else
       cout << "Could not find a student with id: " << id << endl;
-
-    /* OLD VERSION
-    Node<Student> *result = masterStudent.getNode(Student(id));
-    if(result != NULL) {
-      cout << "Found a student with id: " << id << endl;
-      cout << result->data << endl;
-    }
-    else
-      cout << "Could not find a student with id: " << id << endl;
-    */
   }
   catch (const invalid_argument &e) {
     cout << "You did not enter a valid number." << endl;
@@ -99,7 +89,7 @@ void Database::findFaculty() {
   }
 }
 
-
+//***Note that this method assumes referential integrity is enforced**
 void Database::findAdvisees() {
   string userInput;
   cout << "Enter a faculty ID number: ";
@@ -108,11 +98,22 @@ void Database::findAdvisees() {
   try {
     int id = stoi(userInput);
 
-    Faculty *found = findByFID(id);
-    if(found != NULL) {
+    Faculty *advisor = findByFID(id);
+    if(advisor != NULL) {
       cout << "Found a faculty member with id: " << id << endl;
-      //Note that this assumes referential integrity is enforced.
-    //  cout << found->advisees.toString(); //START HERE !!!!! ########
+      IntNode* curr;
+
+      if (!advisor->advisees.isEmpty()) { //if the advisor has at least 1 advisee
+        cout << "Students for advisor number: " << id << endl;
+        curr = advisor->advisees.start; //set curr to the start of the advisee list
+        while(curr != NULL) { //and print the corresponding student in the student table
+          Student* adv = findBySID(curr->data);
+          cout << *adv << endl;
+          curr = curr->next;
+        }
+      }
+      else
+        cout << "That faculty member does not have any advisees";
     }
     else
       cout << "Could not find a faculty member with id: " << id << endl;
@@ -123,7 +124,8 @@ void Database::findAdvisees() {
 }
 
 Student* Database::findBySID(int i) {
-  Node<Student> *result = masterStudent.getNode(Student(i));
+  Student temp = Student(i);
+  Node<Student> *result = masterStudent.getNode(temp);
   if(result != NULL) {
     return &result->data;
   }
@@ -132,7 +134,8 @@ Student* Database::findBySID(int i) {
 }
 
 Faculty* Database::findByFID(int i) {
-  Node<Faculty> *result = masterFaculty.getNode(Faculty(i));
+  Faculty temp(i);
+  Node<Faculty> *result = masterFaculty.getNode(temp);
   if(result != NULL) {
     return &result->data;
   }
@@ -199,7 +202,7 @@ void Database::mainMenu() {
     findAdvisor();
   }
   else if(userInput == "6") {
-
+    //findAdvisees();
   }
   else if(userInput == "14") {
     isDone = true;

@@ -12,13 +12,16 @@ public:
   Faculty();
   Faculty(int i);
   Faculty(string n, int i, string l, string d);
+  Faculty(Faculty& other);
   //~Faculty();
   string getInfo() const;
-  
+
   int id;
   string level;
   string department;
   IntList advisees;
+
+  Faculty& operator= (Faculty& other);
 
   //overloaded operators
   friend bool operator== (const Faculty &facultyOne, const Faculty &facultyTwo) {
