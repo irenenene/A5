@@ -14,7 +14,7 @@ public:
   Faculty(string n, int i, string l, string d);
   //~Faculty();
   string getInfo() const;
-
+  
   int id;
   string level;
   string department;

@@ -34,6 +34,7 @@ int main(int argc, char** args) {
   db.masterStudent.insert(Adam);
   db.masterStudent.insert(Arry);
   while(!db.isDone){
+    db.displayMenu();
     db.mainMenu();
   }
 

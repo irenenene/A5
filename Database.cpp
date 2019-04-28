@@ -60,9 +60,8 @@ void Database::findStudent() {
       cout << "Found a student with id: " << id << endl;
       cout << *found << endl;
     }
-    else {
+    else
       cout << "Could not find a student with id: " << id << endl;
-    }
 
     /* OLD VERSION
     Node<Student> *result = masterStudent.getNode(Student(id));
@@ -92,9 +91,31 @@ void Database::findFaculty() {
       cout << "Found a faculty member with id: " << id << endl;
       cout << *found << endl;
     }
-    else {
+    else
       cout << "Could not find a faculty member with id: " << id << endl;
+  }
+  catch (const invalid_argument &e) {
+    cout << "You did not enter a valid number." << endl;
+  }
+}
+
+
+void Database::findAdvisees() {
+  string userInput;
+  cout << "Enter a faculty ID number: ";
+  getline(cin, userInput);
+
+  try {
+    int id = stoi(userInput);
+
+    Faculty *found = findByFID(id);
+    if(found != NULL) {
+      cout << "Found a faculty member with id: " << id << endl;
+      //Note that this assumes referential integrity is enforced.
+    //  cout << found->advisees.toString(); //START HERE !!!!! ########
     }
+    else
+      cout << "Could not find a faculty member with id: " << id << endl;
   }
   catch (const invalid_argument &e) {
     cout << "You did not enter a valid number." << endl;
@@ -145,9 +166,8 @@ void Database::findAdvisor() {
         cout << "That student does not have an advisor." << endl;
       }
     }
-    else {
+    else
       cout << "Student not found." << endl;
-    }
   }
   catch (const invalid_argument &e) {
     cout << "You did not enter a valid number." << endl;
@@ -156,8 +176,7 @@ void Database::findAdvisor() {
 
 
 void Database::mainMenu() {
-  displayMenu();
-
+  //displayMenu();
   string userInput;
   cout << "Enter the number corresponding to your choice: ";
   getline(cin, userInput);
@@ -179,7 +198,13 @@ void Database::mainMenu() {
   else if(userInput == "5") {
     findAdvisor();
   }
+  else if(userInput == "6") {
+
+  }
   else if(userInput == "14") {
     isDone = true;
+  }
+  else {
+    cout << "You did not make a valid selection." << endl;
   }
 }
