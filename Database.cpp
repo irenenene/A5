@@ -80,6 +80,7 @@ void Database::findFaculty() {
     if(found != NULL) {
       cout << "Found a faculty member with id: " << id << endl;
       cout << *found << endl;
+      found->advisees.printList(); //DEBUGGING
     }
     else
       cout << "Could not find a faculty member with id: " << id << endl;
@@ -89,7 +90,6 @@ void Database::findFaculty() {
   }
 }
 
-//***Note that this method assumes referential integrity is enforced**
 void Database::findAdvisees() {
   string userInput;
   cout << "Enter a faculty ID number: ";
@@ -106,9 +106,13 @@ void Database::findAdvisees() {
       if (!advisor->advisees.isEmpty()) { //if the advisor has at least 1 advisee
         cout << "Students for advisor number: " << id << endl;
         curr = advisor->advisees.start; //set curr to the start of the advisee list
-        while(curr != NULL) { //and print the corresponding student in the student table
+        while(curr != nullptr) { //and print the corresponding student in the student table
           Student* adv = findBySID(curr->data);
-          cout << *adv << endl;
+
+          if(adv != nullptr)
+            cout << *adv << endl;
+          else
+            cout << "Error finding a match in student table." << endl; //DEBUG
           curr = curr->next;
         }
       }
@@ -202,7 +206,7 @@ void Database::mainMenu() {
     findAdvisor();
   }
   else if(userInput == "6") {
-    //findAdvisees();
+    findAdvisees();
   }
   else if(userInput == "14") {
     isDone = true;

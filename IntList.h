@@ -15,6 +15,7 @@ public:
   bool isEmpty();
   void insert(int d);
   void remove(int d);
+  void printList();
 
   IntNode* start;
   int size;

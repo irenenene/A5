@@ -15,29 +15,20 @@ int main(int argc, char** args) {
   Faculty Bob (1234);
   Bob.advisees.insert(55);
   Bob.advisees.insert(48);
-  cout << Bob.getInfo();
   Bob.advisees.remove(55);
   db.masterFaculty.insert(Bob);
-  cout << Bob.getInfo();
-/*  Faculty Alice (666);
+  Faculty Alice (666);
   Student Adam (55);
   Student Arry (5555);
-
-  cout << Bob.getInfo() << endl;
-  cout << "----" << endl;
-
-  Bob.advisees.insert(55);
-  cout << Bob.getInfo() << endl;
-  //Bob.advisees.remove(55);
-  //cout << "after remove: " << Bob.getInfo() << endl;
-
+//  Student Stud (48);
   Adam.advisorID = 666;
 
   db.masterFaculty.insert(Bob);
-/*  db.masterFaculty.insert(Alice);
+  db.masterFaculty.insert(Alice);
   db.masterStudent.insert(Adam);
   db.masterStudent.insert(Arry);
-*/
+//  db.masterStudent.insert(Stud);
+
   while(!db.isDone){
     db.displayMenu();
     db.mainMenu();

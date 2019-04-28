@@ -27,7 +27,7 @@ IntList::IntList(IntList& other) {
     start = new IntNode(otherCurr->data);
     IntNode* curr = start;
 
-    while(otherCurr->next != NULL) {
+    while(otherCurr->next != nullptr) {
       curr->next = new IntNode(otherCurr->next->data);
       otherCurr = otherCurr->next;
       curr = curr->next;
@@ -47,7 +47,7 @@ IntList& IntList::operator=(IntList& other) {
       start = new IntNode(otherCurr->data);
       IntNode* curr = start;
 
-      while(otherCurr->next != NULL) {
+      while(otherCurr->next != nullptr) {
         curr->next = new IntNode(otherCurr->next->data);
         otherCurr = otherCurr->next;
         curr = curr->next;
@@ -78,14 +78,14 @@ void IntList::remove(int d) {
   {
     if(size == 1) {
       delete start;
-      start = NULL;
+      start = nullptr;
       size--;
     }
     else {
       IntNode *curr = start;
       IntNode *temp;
 
-      while (curr != NULL) {
+      while (curr != nullptr) {
         if(curr->data != d) {
           temp = curr;
           curr = curr->next;
@@ -99,4 +99,18 @@ void IntList::remove(int d) {
       } //traversed entire list without finding
     }
   }
+}
+
+void IntList::printList() {
+  cout << size << endl;
+  if(!isEmpty()) {
+    cout << "inside the loop";
+    IntNode * curr = start;
+    cout << "is it null?" << (curr == nullptr) << endl;
+    while (curr != nullptr) {
+      cout << curr->data << endl;
+      curr = curr->next;
+    }
+  }
+
 }
