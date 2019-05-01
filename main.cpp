@@ -14,17 +14,18 @@ int main(int argc, char** args) {
   //BEGIN TEST
   Faculty Bob (1234);
   Bob.advisees.insert(55);
-  Bob.advisees.insert(48);
+  Bob.advisees.insert(5555);
   Bob.advisees.insert(1);
   Bob.advisees.insert(2);
   Bob.advisees.insert(3);
-  Bob.advisees.remove(55);
-  db.masterFaculty.insert(Bob);
+  Bob.advisees.remove(1);
+  //db.masterFaculty.insert(Bob);
   Faculty Alice (666);
   Student Adam (55);
   Student Arry (5555);
 //  Student Stud (48);
-  Adam.advisorID = 666;
+  Arry.advisorID = 1234;
+  Adam.advisorID = 1234;
 
   db.masterFaculty.insert(Bob);
   db.masterFaculty.insert(Alice);

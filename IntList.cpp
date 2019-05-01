@@ -8,7 +8,7 @@ IntList::IntList() {
 }
 
 IntList::~IntList() {
-/*  if(!isEmpty()) {
+  if(!isEmpty()) {
     IntNode *curr = start;
 
     while (curr != NULL) {
@@ -16,8 +16,7 @@ IntList::~IntList() {
       curr = curr->next;
       delete temp;
     }
-  }*/
-  delete start;
+  }
 }
 
 IntList::IntList(IntList& other) {
@@ -83,7 +82,7 @@ void IntList::remove(int d) {
     }
     else {
       IntNode *curr = start;
-      IntNode *temp;
+      IntNode *temp = nullptr;
 
       while (curr != nullptr) {
         if(curr->data != d) {
@@ -106,11 +105,28 @@ void IntList::printList() {
   if(!isEmpty()) {
     cout << "inside the loop";
     IntNode * curr = start;
-    cout << "is it null?" << (curr == nullptr) << endl;
+    //cout << "is it null?" << (curr == nullptr) << endl;
     while (curr != nullptr) {
       cout << curr->data << endl;
       curr = curr->next;
     }
   }
 
+}
+
+bool IntList::contains(int d) {
+  if(isEmpty()) {
+    return false;
+  }
+  else {
+    IntNode *curr = start;
+
+    while (curr != nullptr) {
+      if(curr->data == d) {
+        return true;
+      }
+      curr = curr->next;
+    }
+    return false;
+  }
 }

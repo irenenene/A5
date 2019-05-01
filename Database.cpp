@@ -293,9 +293,17 @@ void Database::deleteFaculty() {
 
     Faculty *theFaculty = findByFID(idNum);
     if (theFaculty != NULL) { //if the faculty member exists
-      //might want to use an iterator instead
+      //iterate through their advisee list
       for( IntList::Iterator iter = theFaculty->advisees.begin(); iter != theFaculty->advisees.end(); iter++) {
-        cout << *iter << " ";
+        //for each advisee, update their advisor reference.
+        //cout << *iter << " ";
+        int sID = *iter;
+
+        Student* theStudent = findBySID(idNum); //*****need to these this still
+        if(theStudent != NULL) { //if that student exists
+          //update their advisor
+          theStudent->advisorID = 0;
+        }
       }
 
       masterFaculty.deleteNode(*theFaculty);
@@ -310,6 +318,95 @@ void Database::deleteFaculty() {
   }
 }
 
+void Database::changeAdvisor() { //NEED TO TEST
+  string userInput;
+  cout << "Enter a student ID number: ";
+  getline(cin, userInput);
+
+  try {
+    int sID = stoi(userInput);
+
+    Student *theStudent = findBySID(sID);
+    if(theStudent != NULL) { //if the student is in the system
+      cout << "Enter a new advisor ID: ";
+      getline(cin, userInput);
+      int aID = stoi(userInput);
+
+      Faculty *theFaculty = findByFID(aID);
+      if(theFaculty != NULL) {
+        if(theStudent->advisorID > 0) {//if the student had an advisor
+          Faculty *prevAdvisor = findByFID(theStudent->advisorID);
+          //remove the student from the previous advisee
+          if(prevAdvisor != NULL) {
+            prevAdvisor->advisees.remove(sID);
+            cout << "Removed the reference from the previous advisor." << endl;
+          }
+        }
+
+        //update the new advisor's advisee list
+        if(!theFaculty->advisees.contains(sID)) {
+          theFaculty->advisees.insert(sID);
+        }
+        else {
+          cout << "That student id is already in that faculty's advisee list" << endl;
+        }
+
+        //update the student's advisor number
+        theStudent->advisorID = aID;
+      }
+    }
+    else {
+      cout << "Could not find a student with that ID number. " << endl;
+    }
+  }
+  catch (const invalid_argument &e) {
+    cout << "You did not enter a valid number." << endl;
+  }
+}
+
+void Database::removeAdvisee() { //NEED TO TEST
+  string userInput;
+  cout << "Enter a faculty ID number: ";
+  getline(cin, userInput);
+
+  try {
+    int advID = stoi(userInput);
+
+    Faculty *advisor = findByFID(advID);
+    if(advisor != NULL) {
+      cout << "Advisees for advisor #:" << advID << endl;
+      for( IntList::Iterator iter = advisor->advisees.begin(); iter != advisor->advisees.end(); iter++) {
+        //display their advisees
+        cout << *iter << endl;
+      }
+
+      cout << "Which advisee would you like to remove: ";
+      getline(cin, userInput);
+      int sID = stoi(userInput);
+
+      Student* theStudent = findBySID(sID);
+      if(theStudent != NULL) { //if the student exists and is in the advisor's list
+        if(advisor->advisees.contains(sID)) {
+          theStudent->advisorID = 0;
+          advisor->advisees.remove(sID);
+          cout << "Done." << endl;
+        }
+        else {
+          cout << "That student is not an advisee of this advisor." << endl;
+        }
+      }
+      else {
+        cout << "That student does not exist in the system." << endl;
+      }
+    }
+    else {
+      cout << "Could not find an advisor with that ID number." << endl;
+    }
+  }
+  catch (const invalid_argument &e) {
+    cout << "You did not enter a valid number." << endl;
+  }
+}
 
 void Database::mainMenu() {
   //displayMenu();
@@ -348,6 +445,12 @@ void Database::mainMenu() {
   }
   else if(userInput == "10") {
     deleteFaculty();
+  }
+  else if(userInput == "11") {
+    changeAdvisor();
+  }
+  else if(userInput == "12") {
+    removeAdvisee();
   }
   else if(userInput == "14") {
     isDone = true;

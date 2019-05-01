@@ -29,6 +29,8 @@ public:
   void deleteStudent();
   void addFaculty();
   void deleteFaculty();
+  void changeAdvisor();
+  void removeAdvisee();
 
   //helper methods utilizing the BST search
   Student* findBySID(int i);

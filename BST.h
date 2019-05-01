@@ -94,12 +94,13 @@ bool BST<T>::contains(T& d) {
       return false;
   }
 
+  //cout << "Duplicate entry detected." << endl;
   return true;
 }
 
 template <class T>
 bool BST<T>::insert(T& d) {
-  cout << "inserting" << endl;
+  cout << "inserting into the BST" << endl;
   if (contains(d)) //abort if the tree already contains the key
     return false;
 

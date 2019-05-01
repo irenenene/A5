@@ -16,6 +16,7 @@ public:
   void insert(int d);
   void remove(int d);
   void printList();
+  bool contains(int d);
 
   IntNode* start;
   int size;

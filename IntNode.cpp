@@ -18,6 +18,5 @@ IntNode::IntNode(IntNode& other) {
 }
 
 IntNode::~IntNode() {
-  //next = nullptr;
-  delete next;
+  next = nullptr;
 }
