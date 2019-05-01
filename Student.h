@@ -9,6 +9,7 @@ using namespace std;
 class Student : public Person {
 public:
   Student();
+  Student(Student& other);
   Student(int i);
   Student(string n, int i, string l, string m, double g, int aID);
 //  ~Student();
@@ -19,6 +20,8 @@ public:
   string major;
   double gpa;
   int advisorID;
+
+  Student& operator= (Student& other);
 
   //overloaded operators
   friend bool operator== (const Student &studentOne, const Student &studentTwo) {

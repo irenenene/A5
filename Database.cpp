@@ -128,7 +128,7 @@ void Database::findAdvisees() {
 }
 
 Student* Database::findBySID(int i) {
-  Student temp = Student(i);
+  Student temp(i);
   Node<Student> *result = masterStudent.getNode(temp);
   if(result != NULL) {
     return &result->data;
@@ -145,6 +145,44 @@ Faculty* Database::findByFID(int i) {
   }
   else
     return nullptr;
+}
+
+void Database::addStudent() {
+  string userInput;
+  cout << "Enter the student's ID number: ";
+  getline(cin, userInput);
+
+  try {
+    int sID = stoi(userInput);
+
+    if(findBySID(sID) == NULL) { //if that ID is not being used
+      string sName;
+      string sLevel;
+      string sMajor;
+      double sGPA;
+
+      cout << "Enter the student's name: ";
+      getline(cin, sName);
+      cout << "Enter the student's level: ";
+      getline(cin, sLevel);
+      cout << "Enter the student's major: ";
+      getline(cin, sMajor);
+      cout << "Enter the student's GPA: ";
+      getline(cin, userInput);
+      sGPA = stod(userInput);
+      Student *newStudent = new Student(sName, sID, sLevel, sMajor, sGPA, 0);
+      masterStudent.insert(*newStudent);
+      cout << "Done." << endl;
+      delete newStudent;
+    }
+    else {
+      cout << "That ID number is already being used." << endl;
+    }
+
+  }
+  catch (const invalid_argument &e) {
+    cout << "You entered an invalid number." << endl;
+  }
 }
 
 void Database::findAdvisor() {
@@ -207,6 +245,9 @@ void Database::mainMenu() {
   }
   else if(userInput == "6") {
     findAdvisees();
+  }
+  else if(userInput == "7") {
+    addStudent();
   }
   else if(userInput == "14") {
     isDone = true;

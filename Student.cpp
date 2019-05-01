@@ -9,6 +9,14 @@ Student::Student() : Person() {
   advisorID = 0;
 }
 
+Student::Student(Student& other) : Person(other.name) {
+  id = other.id;
+  level = other.level;
+  major = other.major;
+  gpa = other.gpa;
+  advisorID = other.advisorID;
+}
+
 Student::Student(int i) : Person() {
   id = i;
   level = "Default level";
@@ -28,6 +36,14 @@ Student::Student(string n, int i, string l, string m, double g, int aID) : Perso
 Student::~Student() {
 
 }*/
+
+Student& Student::operator= (Student& other) {
+  name = other.name;
+  id = other.id;
+  level = other.level;
+  major = other.major;
+  advisorID = other.advisorID;
+}
 
 string Student::getInfo() const {
   string retString = "";
