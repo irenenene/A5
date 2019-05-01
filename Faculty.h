@@ -43,7 +43,7 @@ public:
     return facultyOne.id >= facultyTwo.id;
   }
   friend ostream& operator<< (ostream &out, const Faculty &f) {
-    out << f.getInfo();
+    cout << f.getInfo();
     return out;
   }
 };

@@ -43,6 +43,8 @@ Student& Student::operator= (Student& other) {
   level = other.level;
   major = other.major;
   advisorID = other.advisorID;
+
+  return *this;
 }
 
 string Student::getInfo() const {

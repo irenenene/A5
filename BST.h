@@ -190,9 +190,9 @@ bool BST<T>::deleteNode(T& d) {
         root = nullptr;
       }
       else if(delNode->parent->left == delNode) //else if delNode is the left child
-        delNode->parent->left == NULL;
+        delNode->parent->left = NULL;
       else
-        delNode->parent->right == NULL;
+        delNode->parent->right = NULL;
     } // seems good
     //one child cases
     else if (delNode->right == NULL && delNode->left != NULL) { //if node has a left child

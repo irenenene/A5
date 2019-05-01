@@ -229,8 +229,79 @@ void Database::deleteStudent() {
 
     Student *theStudent = findBySID(searchID);
     if(theStudent != NULL) { //if the student is in the system
+      //remove reference of the student from advisor
+      int advID = theStudent->advisorID;
+      if(advID > 0) { //NEED TO TEST THIS STILL
+        Faculty *theAdvisor = findByFID(advID);
+        if(theAdvisor != NULL) {
+          theAdvisor->advisees.remove(searchID);
+        }
+      }
+
       masterStudent.deleteNode(*theStudent);
       cout << "Done." << endl;
+    }
+  }
+  catch (const invalid_argument &e) {
+    cout << "You did not enter a valid number." << endl;
+  }
+}
+
+void Database::addFaculty() {
+  string userInput;
+  cout << "Enter the new faculty's ID number: ";
+  getline(cin, userInput);
+
+  try {
+    int aID = stoi(userInput);
+
+    if(aID == 0)
+      cout << "You can not use that ID number." << endl;
+
+    if(findByFID(aID) == NULL && aID > 0) { //if that ID is not being used
+      string level;
+      string department;
+      string name;
+      cout << "Enter the faculty member's name: ";
+      getline(cin, name);
+      cout << "Enter the faculty member's level: ";
+      getline(cin, level);
+      cout << "Enter the faculty member's department: ";
+      getline(cin, department);
+
+      Faculty *newFaculty = new Faculty(name, aID, level, department);
+      masterFaculty.insert(*newFaculty);
+      cout << "Done." << endl;
+      delete newFaculty;
+    }
+    else {
+      cout << "That ID number is already being used." << endl;
+    }
+  }
+  catch (const invalid_argument &e) {
+    cout << "You entered an invalid number." << endl;
+  }
+}
+
+void Database::deleteFaculty() {
+  string userInput;
+  cout << "Please enter the faculty ID number: ";
+  getline(cin, userInput);
+
+  try {
+    int idNum = stoi(userInput);
+
+    Faculty *theFaculty = findByFID(idNum);
+    if (theFaculty != NULL) { //if the faculty member exists
+      //might want to use an iterator instead
+      
+
+
+      masterFaculty.deleteNode(*theFaculty);
+      cout << "Done." << endl;
+    }
+    else {
+      cout << "Could not locate a faculty member with that ID number." << endl;
     }
   }
   catch (const invalid_argument &e) {
@@ -272,7 +343,7 @@ void Database::mainMenu() {
     deleteStudent();
   }
   else if(userInput == "9") {
-    //addFaculty
+    addFaculty();
   }
   else if(userInput == "14") {
     isDone = true;
