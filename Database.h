@@ -26,6 +26,7 @@ public:
   void findAdvisor();
   void findAdvisees();
   void addStudent();
+  void deleteStudent();
 
   //helper methods utilizing the BST search
   Student* findBySID(int i);

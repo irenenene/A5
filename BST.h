@@ -100,10 +100,10 @@ bool BST<T>::contains(T& d) {
 template <class T>
 bool BST<T>::insert(T& d) {
   cout << "inserting" << endl;
-  if (contains(d))
+  if (contains(d)) //abort if the tree already contains the key
     return false;
 
-  Node<T> *newNode = new Node<T>(d); //here*********
+  Node<T> *newNode = new Node<T>(d);
   cout << "after new Node" << endl;
   if(isEmpty()) {
     root = newNode;
@@ -184,42 +184,50 @@ bool BST<T>::deleteNode(T& d) {
     return false;
   }
   else { //start here
-    //if leaf node
-    if(!delNode->left && !delNode->right) {
-      if(delNode == root) //if they are pointing to the same place
-        root = NULL;
+    if(!delNode->left && !delNode->right) { //if leaf node
+      if(delNode == root) {
+        cout << "Deleting the root, no children." << endl;
+        root = nullptr;
+      }
       else if(delNode->parent->left == delNode) //else if delNode is the left child
         delNode->parent->left == NULL;
       else
         delNode->parent->right == NULL;
-    }
-    //one child
-    else if (delNode->right == NULL) {
+    } // seems good
+    //one child cases
+    else if (delNode->right == NULL && delNode->left != NULL) { //if node has a left child
       if(delNode == root)
         root = delNode->left;
-      else if(delNode->parent->left == delNode)
+      else if(delNode->parent->left == delNode) {//if left child
         delNode->parent->left = delNode->left;
-      else
+        delNode->left->parent = delNode->parent; //update parent pointer
+      }
+      else {
         delNode->parent->right = delNode->left;
-
-      delNode->left->parent = delNode->parent; //update parent pointer
+        delNode->left->parent = delNode->parent; //update parent pointer
+      }
     }
-    else if(delNode->left == NULL) {
+    else if(delNode->left == NULL && delNode->right != NULL) { //if node has a right child
       if(delNode == root)
-        root->right = delNode->right;
-      else if(delNode->parent->left == delNode)
-        delNode->parent->left = delNode->right;
-      else
+        root = delNode->right;
+      else if(delNode->parent->left == delNode) { //if node is the left child
+        delNode->parent->left = delNode->right; //the parent's left child is replaced by delNode's only child
+        delNode->right->parent = delNode->parent;
+      }
+      else {
         delNode->parent->right = delNode->right;
-
-      delNode->right->parent = delNode->parent;
+        delNode->right->parent = delNode->parent;
+      }
     }
     //two children
     else {
       Node<T>* successor = getSuccessor(delNode);
 
       if(delNode == root)
+      {
+        cout << "is root";
         root = successor;
+      }
       else if (delNode->parent->left == delNode)
         delNode->parent->left = successor;
       else
@@ -228,6 +236,7 @@ bool BST<T>::deleteNode(T& d) {
       successor->left = delNode->left;
 
       //update parent pointers
+      cout << "Updating parent pointers for successor" << endl;
       successor->left->parent = successor;
       successor->right->parent = successor;
     }

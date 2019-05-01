@@ -194,12 +194,12 @@ void Database::findAdvisor() {
     int sID = stoi(userInput);
 
     Student* advisee = findBySID(sID);
-    if(advisee != NULL) {
+    if(advisee != NULL) { //if the student exists
       if(advisee->advisorID > 0) { //if valid facultyID
         int fID = advisee->advisorID;
         Faculty* advisor = findByFID(fID);
 
-        if(advisor != NULL) {
+        if(advisor != NULL) { //if the advisor exists
           cout << "Found the advisor for student ID: " << sID << endl;
           cout << *advisor << endl;
         }
@@ -213,6 +213,25 @@ void Database::findAdvisor() {
     }
     else
       cout << "Student not found." << endl;
+  }
+  catch (const invalid_argument &e) {
+    cout << "You did not enter a valid number." << endl;
+  }
+}
+
+void Database::deleteStudent() {
+  string userInput;
+  cout << "Enter the student ID number: ";
+  getline(cin, userInput);
+
+  try {
+    int searchID = stoi(userInput);
+
+    Student *theStudent = findBySID(searchID);
+    if(theStudent != NULL) { //if the student is in the system
+      masterStudent.deleteNode(*theStudent);
+      cout << "Done." << endl;
+    }
   }
   catch (const invalid_argument &e) {
     cout << "You did not enter a valid number." << endl;
@@ -248,6 +267,12 @@ void Database::mainMenu() {
   }
   else if(userInput == "7") {
     addStudent();
+  }
+  else if(userInput == "8") {
+    deleteStudent();
+  }
+  else if(userInput == "9") {
+    //addFaculty
   }
   else if(userInput == "14") {
     isDone = true;
