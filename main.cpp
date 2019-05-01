@@ -15,6 +15,9 @@ int main(int argc, char** args) {
   Faculty Bob (1234);
   Bob.advisees.insert(55);
   Bob.advisees.insert(48);
+  Bob.advisees.insert(1);
+  Bob.advisees.insert(2);
+  Bob.advisees.insert(3);
   Bob.advisees.remove(55);
   db.masterFaculty.insert(Bob);
   Faculty Alice (666);

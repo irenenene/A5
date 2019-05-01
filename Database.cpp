@@ -294,8 +294,9 @@ void Database::deleteFaculty() {
     Faculty *theFaculty = findByFID(idNum);
     if (theFaculty != NULL) { //if the faculty member exists
       //might want to use an iterator instead
-      
-
+      for( IntList::Iterator iter = theFaculty->advisees.begin(); iter != theFaculty->advisees.end(); iter++) {
+        cout << *iter << " ";
+      }
 
       masterFaculty.deleteNode(*theFaculty);
       cout << "Done." << endl;
@@ -344,6 +345,9 @@ void Database::mainMenu() {
   }
   else if(userInput == "9") {
     addFaculty();
+  }
+  else if(userInput == "10") {
+    deleteFaculty();
   }
   else if(userInput == "14") {
     isDone = true;
