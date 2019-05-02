@@ -22,6 +22,7 @@ void Database::initialize() {
   // Faculty Table begin //
   ifstream facultyStream;
   facultyStream.open("facultyTable");
+  bool noFaculty = false; //flag will be set if error encountered
 
   if(facultyStream.is_open()) {
     string fileIn = "";
@@ -48,20 +49,23 @@ void Database::initialize() {
 
         cout << newFac << endl;
         //ADD THE NEW FACULTY MEMBER TO THE TABLE
-        //masterFaculty.insert(newFac);
+        masterFaculty.insert(newFac);
       }
     }
     catch (const ifstream::failure& e) { //should catch a fail bit if trying to read past eof
       cout << "Tried to read past EOF" << endl;
+      noFaculty = true;
     }
     catch (const invalid_argument &e) { //catches failed casts that can result from a corrupted file
       cout << "Error reading from file." << endl;
+      noFaculty = true;
     }
 
     facultyStream.close();
   }
   else {
     cout << "facultyTable does not exist." << endl;
+    noFaculty = true;
   }
 
   // Faculty Table end //
@@ -69,6 +73,7 @@ void Database::initialize() {
   // Student Table begin //
   ifstream studentStream;
   studentStream.open("studentTable");
+  bool noStudent = false;
 
   if(studentStream.is_open()) {
     string fileString = "";
@@ -90,17 +95,33 @@ void Database::initialize() {
 
         cout << newStu << endl;
         //ADD THE NEW STUDENT TO THE TABLE
-        //masterStudent.insert(newStu);
+        masterStudent.insert(newStu);
       }
     }
     catch (const ifstream::failure& e) { //should catch a fail bit if trying to read past eof
       cout << "Tried to read past EOF" << endl;
+      noStudent = true;
     }
     catch (const invalid_argument &e) { //catches failed casts that can result from a corrupted file
       cout << "Error reading from file." << endl;
+      noStudent = true;
     }
   }
+  else {
+    cout << "studentTable does not exist." << endl;
+    noStudent = true;
+  }
   // Student Table End //
+
+  //START TESTING OF READING FROM FILE *********************
+
+  //check if there were any problems with either the faculty or student table
+  //if so, clear BOTH tables.
+  if (noStudent && noFaculty) {
+    cout << "Error reading from files. Starting with blank tables." << endl;
+    masterFaculty.recursiveDelete(masterFaculty.getRoot());
+    masterStudent.recursiveDelete(masterStudent.getRoot());
+  }
 }
 
 void Database::displayMenu() {
@@ -540,7 +561,7 @@ void Database::mainMenu() {
       out.close();
     }
 
-    ofstream studentOut("studenttest.txt", fstream::out);
+    ofstream studentOut("studentTable", fstream::out);
     if(studentOut.is_open()) {
       masterStudent.writeTree(studentOut);
       studentOut.close();

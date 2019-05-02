@@ -13,6 +13,7 @@ int main(int argc, char** args) {
   Database db;
 
   //BEGIN TEST
+  /*
   Faculty Bob (1234);
   Bob.advisees.insert(55);
   Bob.advisees.insert(5555);
@@ -33,7 +34,7 @@ int main(int argc, char** args) {
   db.masterStudent.insert(Adam);
   db.masterStudent.insert(Arry);
 //  db.masterStudent.insert(Stud);
-
+  */
 
   while(!db.isDone){
     db.displayMenu();

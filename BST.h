@@ -42,6 +42,7 @@ public:
   bool contains(T& d);
   Node<T>* getSuccessor(Node<T> *d); //returns left-most child of right subtree
   Node<T>* getNode(T& d);
+  Node<T>* getRoot();
   void recursivePrint(Node<T>* curr);
   void printTree();
   void preorderWrite(ofstream& outStream, Node<T> *c);
@@ -62,6 +63,11 @@ BST<T>::~BST() {
   if(!isEmpty())
     recursiveDelete(root);
   cout << "Deleting the tree" << endl;
+}
+
+template <class T>
+Node<T>* BST<T>::getRoot() {
+  return root;
 }
 
 template <class T>
