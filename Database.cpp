@@ -17,38 +17,38 @@ void Database::initialize() {
   if neither exist, initialize as new.
   if only one exists, remove references
   */
+  //ifstream inputFile;
 
   // Faculty Table begin //
+  ifstream facultyStream;
+  facultyStream.open("facultyTable");
 
-  ifstream inputFile;
-  inputFile.open("facultyTable");
-  //bool fail = false;
-
-  if(inputFile.is_open()) {
+  if(facultyStream.is_open()) {
     string fileIn = "";
     try {
-      while(getline(inputFile, fileIn)) { //get the name first
+      while(getline(facultyStream, fileIn)) { //get the name first
         Faculty newFac; //scope should only be within this block.
 
         newFac.name = fileIn;
-        getline(inputFile, fileIn); //get the ID num
+        getline(facultyStream, fileIn); //get the ID num
         newFac.id = stoi(fileIn);
-        getline(inputFile, fileIn); //get the level
+        getline(facultyStream, fileIn); //get the level
         newFac.level = fileIn;
-        getline(inputFile, fileIn); //get the department
+        getline(facultyStream, fileIn); //get the department
         newFac.department = fileIn;
-        getline(inputFile, fileIn); //get the number of advisees
+        getline(facultyStream, fileIn); //get the number of advisees
         int numAdv = stoi(fileIn);
 
         for(int i = 0; i < numAdv; i++) { //add studentID to advisees list
           cout << "Adding a student." << endl;
-          getline(inputFile, fileIn);
+          getline(facultyStream, fileIn);
           int tempSID = stoi(fileIn);
           newFac.advisees.insert(tempSID);
         }
 
         cout << newFac << endl;
-        //add the faculty member here.
+        //ADD THE NEW FACULTY MEMBER TO THE TABLE
+        //masterFaculty.insert(newFac);
       }
     }
     catch (const ifstream::failure& e) { //should catch a fail bit if trying to read past eof
@@ -58,13 +58,49 @@ void Database::initialize() {
       cout << "Error reading from file." << endl;
     }
 
-    inputFile.close();
+    facultyStream.close();
   }
   else {
     cout << "facultyTable does not exist." << endl;
   }
 
   // Faculty Table end //
+
+  // Student Table begin //
+  ifstream studentStream;
+  studentStream.open("studentTable");
+
+  if(studentStream.is_open()) {
+    string fileString = "";
+    try {
+      while(getline(studentStream, fileString)) { //get the name first
+        Student newStu;
+
+        newStu.name = fileString;
+        getline(studentStream, fileString); //get the ID number
+        newStu.id = stoi(fileString);
+        getline(studentStream, fileString); //get the level
+        newStu.level = fileString;
+        getline(studentStream, fileString); //get the Major
+        newStu.major = fileString;
+        getline(studentStream, fileString); //get the gpa and cast to double.
+        newStu.gpa = stod(fileString);
+        getline(studentStream, fileString); //get the advisor ID
+        newStu.advisorID = stoi(fileString);
+
+        cout << newStu << endl;
+        //ADD THE NEW STUDENT TO THE TABLE
+        //masterStudent.insert(newStu);
+      }
+    }
+    catch (const ifstream::failure& e) { //should catch a fail bit if trying to read past eof
+      cout << "Tried to read past EOF" << endl;
+    }
+    catch (const invalid_argument &e) { //catches failed casts that can result from a corrupted file
+      cout << "Error reading from file." << endl;
+    }
+  }
+  // Student Table End //
 }
 
 void Database::displayMenu() {
