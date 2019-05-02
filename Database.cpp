@@ -231,7 +231,7 @@ void Database::deleteStudent() {
     if(theStudent != NULL) { //if the student is in the system
       //remove reference of the student from advisor
       int advID = theStudent->advisorID;
-      if(advID > 0) { //NEED TO TEST THIS STILL
+      if(advID > 0) {
         Faculty *theAdvisor = findByFID(advID);
         if(theAdvisor != NULL) {
           theAdvisor->advisees.remove(searchID);
@@ -299,7 +299,7 @@ void Database::deleteFaculty() {
         //cout << *iter << " ";
         int sID = *iter;
 
-        Student* theStudent = findBySID(idNum); //*****need to these this still
+        Student* theStudent = findBySID(sID);
         if(theStudent != NULL) { //if that student exists
           //update their advisor
           theStudent->advisorID = 0;
@@ -318,7 +318,7 @@ void Database::deleteFaculty() {
   }
 }
 
-void Database::changeAdvisor() { //NEED TO TEST
+void Database::changeAdvisor() {
   string userInput;
   cout << "Enter a student ID number: ";
   getline(cin, userInput);
@@ -364,7 +364,7 @@ void Database::changeAdvisor() { //NEED TO TEST
   }
 }
 
-void Database::removeAdvisee() { //NEED TO TEST
+void Database::removeAdvisee() {
   string userInput;
   cout << "Enter a faculty ID number: ";
   getline(cin, userInput);
@@ -385,8 +385,8 @@ void Database::removeAdvisee() { //NEED TO TEST
       int sID = stoi(userInput);
 
       Student* theStudent = findBySID(sID);
-      if(theStudent != NULL) { //if the student exists and is in the advisor's list
-        if(advisor->advisees.contains(sID)) {
+      if(theStudent != NULL) { //if the student exists
+        if(advisor->advisees.contains(sID)) { //if the student is in the advisor's list
           theStudent->advisorID = 0;
           advisor->advisees.remove(sID);
           cout << "Done." << endl;

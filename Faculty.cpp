@@ -1,5 +1,4 @@
 #include "Faculty.h"
-#include <string>
 
 Faculty::Faculty() : Person(), id(0), level("Default level"), department("Default department"), advisees() {
 
@@ -37,4 +36,38 @@ string Faculty::getInfo() const {
               "Department: " + department + " - " +
               "Num of advisees: " + to_string(advisees.size);
   return retString;
+}
+
+//for writing to file
+void Faculty::write(ostream &outs) {
+  outs << name << endl;
+  outs << id << endl;
+  outs << level << endl;
+  outs << department << endl;
+  outs << advisees.size << endl;
+  for (IntList::Iterator iter = advisees.begin(); iter != advisees.end(); iter++) {
+    outs << *iter << endl;
+  }
+}
+
+void Faculty::read(ifstream &ins) {
+  try {
+    getline(ins, name);
+    string inputString;
+    getline(ins, inputString);
+    id = stoi(inputString);
+    getline(ins, level);
+    getline(ins, department);
+    getline(ins, inputString);
+    int numAdvisees = stoi(inputString);
+    for(int i = 0; i < numAdvisees; i++) {
+      getline(ins, inputString);
+      int tempSID = stoi(inputString);
+      advisees.insert(tempSID);
+    }
+  }
+  catch (invalid_argument &e) {
+    cout << e.what() << endl;
+  }
+
 }

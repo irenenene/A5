@@ -2,6 +2,8 @@
 #define FACULTY_H
 
 #include <iostream>
+#include <fstream>
+#include <string>
 #include "Person.h"
 #include "IntList.h"
 
@@ -15,6 +17,8 @@ public:
   Faculty(Faculty& other);
   //~Faculty();
   string getInfo() const;
+  void write(ostream &outs);
+  void read(ifstream &ins);
 
   int id;
   string level;
