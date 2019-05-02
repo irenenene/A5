@@ -2,6 +2,7 @@
 #define BST_H
 
 #include <iostream>
+#include <fstream>
 
 using namespace std;
 
@@ -43,6 +44,8 @@ public:
   Node<T>* getNode(T& d);
   void recursivePrint(Node<T>* curr);
   void printTree();
+  void preorderWrite(ofstream& outStream, Node<T> *c);
+  void writeTree(ofstream& outStream);
 
 private:
   Node<T> *root;
@@ -194,7 +197,7 @@ bool BST<T>::deleteNode(T& d) {
         delNode->parent->left = NULL;
       else
         delNode->parent->right = NULL;
-    } // seems good
+    }
     //one child cases
     else if (delNode->right == NULL && delNode->left != NULL) { //if node has a left child
       if(delNode == root)
@@ -261,6 +264,21 @@ void BST<T>::recursivePrint(Node<T>* c) { //in order
 template <class T>
 void BST<T>::printTree() {
   recursivePrint(root);
+}
+
+template <class T>
+void BST<T>::preorderWrite(ofstream& outStream, Node<T>* c) {
+  Node<T>* curr = c;
+  if(curr != NULL) {
+    outStream << curr->data;
+    preorderWrite(outStream, curr->left);
+    preorderWrite(outStream, curr->right);
+  }
+}
+
+template <class T>
+void BST<T>::writeTree(ofstream& outStream) {
+  preorderWrite(outStream, root);
 }
 
 #endif

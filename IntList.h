@@ -26,11 +26,11 @@ public:
 
   class Iterator;
 
-  Iterator begin() {
+  Iterator begin() const{
     return Iterator(start);
   }
 
-  Iterator end() {
+  Iterator end() const{
     return Iterator(nullptr);
   }
 

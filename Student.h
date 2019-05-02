@@ -2,6 +2,8 @@
 #define STUDENT_H
 
 #include <iostream>
+#include <fstream>
+#include <string>
 #include "Person.h"
 
 using namespace std;
@@ -14,6 +16,7 @@ public:
   Student(string n, int i, string l, string m, double g, int aID);
 //  ~Student();
   string getInfo() const;
+  string writeInfo() const;
 
   int id; //can probably move this to person class
   string level;
@@ -43,9 +46,13 @@ public:
     return studentOne.id >= studentTwo.id;
   }
   friend ostream& operator<< (ostream &out, const Student &s) {
-    cout << s.getInfo();
+    out << s.getInfo();
     return out;
   };
+  friend ofstream& operator<< (ofstream &outs, const Student &s) {
+    outs << s.writeInfo();
+    return outs;
+  }
 
 };
 

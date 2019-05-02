@@ -6,27 +6,65 @@
 using namespace std;
 
 Database::Database() {
-  //initialize();
   isDone = false;
+  initialize();
 }
 
 void Database::initialize() {
-  //check the current directory for the existence of 2 files
-  //facultyTable and studentTable
-  //if neither exist, initialize as new.
-  //if only one exists, remove references
+  /*
+  check the current directory for the existence of 2 files
+  facultyTable and studentTable
+  if neither exist, initialize as new.
+  if only one exists, remove references
+  */
+
+  // Faculty Table begin //
+
   ifstream inputFile;
   inputFile.open("facultyTable");
+  //bool fail = false;
 
-  //if the files do exist, they should be read into the appropriate variables
-  //do this later
   if(inputFile.is_open()) {
-    //read serialized data into masterFaculty
+    string fileIn = "";
+    try {
+      while(getline(inputFile, fileIn)) { //get the name first
+        Faculty newFac; //scope should only be within this block.
+
+        newFac.name = fileIn;
+        getline(inputFile, fileIn); //get the ID num
+        newFac.id = stoi(fileIn);
+        getline(inputFile, fileIn); //get the level
+        newFac.level = fileIn;
+        getline(inputFile, fileIn); //get the department
+        newFac.department = fileIn;
+        getline(inputFile, fileIn); //get the number of advisees
+        int numAdv = stoi(fileIn);
+
+        for(int i = 0; i < numAdv; i++) { //add studentID to advisees list
+          cout << "Adding a student." << endl;
+          getline(inputFile, fileIn);
+          int tempSID = stoi(fileIn);
+          newFac.advisees.insert(tempSID);
+        }
+
+        cout << newFac << endl;
+        //add the faculty member here.
+      }
+    }
+    catch (const ifstream::failure& e) { //should catch a fail bit if trying to read past eof
+      cout << "Tried to read past EOF" << endl;
+    }
+    catch (const invalid_argument &e) { //catches failed casts that can result from a corrupted file
+      cout << "Error reading from file." << endl;
+    }
 
     inputFile.close();
   }
+  else {
+    cout << "facultyTable does not exist." << endl;
+  }
 
-
+  // Faculty Table end //
 }
 
 void Database::displayMenu() {
@@ -452,8 +490,25 @@ void Database::mainMenu() {
   else if(userInput == "12") {
     removeAdvisee();
   }
+  else if(userInput == "13") {
+    //rollback();
+  }
   else if(userInput == "14") {
     isDone = true;
+
+    //writing both BSTs to their respective files.
+    cout << "Writing to file..." << endl;
+    ofstream out("facultyTable", fstream::out);
+    if(out.is_open()) {
+      masterFaculty.writeTree(out);
+      out.close();
+    }
+
+    ofstream studentOut("studenttest.txt", fstream::out);
+    if(studentOut.is_open()) {
+      masterStudent.writeTree(studentOut);
+      studentOut.close();
+    }
   }
   else {
     cout << "You did not make a valid selection." << endl;

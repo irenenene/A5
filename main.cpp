@@ -34,30 +34,6 @@ int main(int argc, char** args) {
   db.masterStudent.insert(Arry);
 //  db.masterStudent.insert(Stud);
 
-//file io testing
-/*
-  cout << "writing to file now." << endl;
-  ofstream out("Test.txt", fstream::out);
-  if(out.is_open()) {
-    Bob.write(out);
-
-    out.close();
-  }
-*/
-/*
-  cout << "reading from file now." << endl;
-  ifstream in("Test.txt", ifstream::in);
-
-  if(in.is_open()) {
-    Faculty newGuy;
-    newGuy.read(in);
-    db.masterFaculty.insert(newGuy);
-    cout << "Done." << endl;
-
-    in.close();
-  }
-*/
-//end file io testing
 
   while(!db.isDone){
     db.displayMenu();

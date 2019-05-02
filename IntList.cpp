@@ -111,7 +111,6 @@ void IntList::printList() {
       curr = curr->next;
     }
   }
-
 }
 
 bool IntList::contains(int d) {

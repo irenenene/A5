@@ -1,4 +1,13 @@
 #include "Faculty.h"
+/*
+The file input/output format will be
+line 1: name
+line 2: id
+line 3: level
+line 4: department
+line 5: number of advisees
+line 6+: one line for each advisee number in the list
+*/
 
 Faculty::Faculty() : Person(), id(0), level("Default level"), department("Default department"), advisees() {
 
@@ -28,6 +37,7 @@ Faculty& Faculty::operator= (Faculty& other) {
   return *this;
 }
 
+//used for string console output of the object.
 string Faculty::getInfo() const {
   string retString = "";
   retString = "ID: " + to_string(id) + " - " +
@@ -38,7 +48,8 @@ string Faculty::getInfo() const {
   return retString;
 }
 
-//for writing to file
+/*
+//was only used for testing. use the overload << ofstream instead
 void Faculty::write(ostream &outs) {
   outs << name << endl;
   outs << id << endl;
@@ -48,8 +59,27 @@ void Faculty::write(ostream &outs) {
   for (IntList::Iterator iter = advisees.begin(); iter != advisees.end(); iter++) {
     outs << *iter << endl;
   }
+}*/
+
+//writeInfo is used to format output to a text file
+//so it can be used by the extraction operator
+string Faculty::writeInfo() const{
+  string retString = "";
+  retString += name + '\n';
+  retString += to_string(id) + '\n';
+  retString += level + '\n';
+  retString += department + '\n';
+  retString += to_string(advisees.size) + '\n';
+  for (IntList::Iterator iter = advisees.begin(); iter != advisees.end(); iter++) {
+    retString += to_string(*iter) + '\n';
+  }
+
+  return retString;
 }
 
+//initializes member variables line by line
+//expects the input format to adhere to the output format above
+//need to do error checking with this still..
 void Faculty::read(ifstream &ins) {
   try {
     getline(ins, name);
@@ -61,13 +91,14 @@ void Faculty::read(ifstream &ins) {
     getline(ins, inputString);
     int numAdvisees = stoi(inputString);
     for(int i = 0; i < numAdvisees; i++) {
+      cout << "Adding a student." << endl;
       getline(ins, inputString);
       int tempSID = stoi(inputString);
       advisees.insert(tempSID);
     }
   }
   catch (invalid_argument &e) {
-    cout << e.what() << endl;
+    cout << "Invalid argument." << endl;
   }
 
 }

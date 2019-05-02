@@ -16,8 +16,9 @@ public:
   Faculty(string n, int i, string l, string d);
   Faculty(Faculty& other);
   //~Faculty();
-  string getInfo() const;
-  void write(ostream &outs);
+  string getInfo() const; //for console output
+  string writeInfo() const; //for file output
+//  void write(ostream &outs);
   void read(ifstream &ins);
 
   int id;
@@ -46,9 +47,17 @@ public:
   friend bool operator>= (const Faculty &facultyOne, const Faculty &facultyTwo) {
     return facultyOne.id >= facultyTwo.id;
   }
+
+  //for console output
   friend ostream& operator<< (ostream &out, const Faculty &f) {
-    cout << f.getInfo();
+    out << f.getInfo();
     return out;
+  }
+
+  //for file output
+  friend ofstream& operator<< (ofstream &outs, const Faculty &f) {
+    outs << f.writeInfo();
+    return outs;
   }
 };
 

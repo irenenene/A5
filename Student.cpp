@@ -1,5 +1,17 @@
 #include "Student.h"
-#include <string>
+
+/*
+The file input/output format will be
+line 1: name
+line 2: id
+line 3: level
+line 4: major
+line 5: gpa
+line 6: advisorID (0 if no advisor)
+*/
+
+//the implementation of student follows Faculty's implementation with just a few differences
+//comments will be in Faculty.cpp
 
 Student::Student() : Person() {
   id = 0;
@@ -42,6 +54,7 @@ Student& Student::operator= (Student& other) {
   id = other.id;
   level = other.level;
   major = other.major;
+  gpa = other.gpa;
   advisorID = other.advisorID;
 
   return *this;
@@ -55,5 +68,17 @@ string Student::getInfo() const {
               "Major: " + major + " - " +
               "GPA: " + to_string(gpa) + " - " +
               "AdvisorID: " + to_string(advisorID);
+  return retString;
+}
+
+string Student::writeInfo() const{
+  string retString = "";
+  retString += name + '\n';
+  retString += to_string(id) + '\n';
+  retString += level + '\n';
+  retString += major + '\n';
+  retString += to_string(gpa) + '\n';
+  retString += to_string(advisorID) + '\n';
+
   return retString;
 }
