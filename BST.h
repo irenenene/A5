@@ -77,12 +77,29 @@ bool BST<T>::isEmpty() {
 
 template <class T>
 void BST<T>::recursiveDelete(Node<T> *curr) {
+  if (curr == root) {
+    root = nullptr;
+  }
   if(curr != NULL) {
+    //update the parent pointers
+    //not tested thoroughly b/c it is not used during normal program execution.
+    if(curr->parent) { //if curr has a parent.
+      //check if curr is a left or right child
+      if(curr->parent->right == curr) { //if right child
+        //update parent's right pointer.
+        curr->parent->right = nullptr;
+      }
+      else {
+        curr->parent->left = nullptr;
+      }
+    }
+
     if(curr->left)
       recursiveDelete(curr->left);
     if(curr->right)
       recursiveDelete(curr->right);
     delete curr;
+    curr = nullptr;
   }
 }
 

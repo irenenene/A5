@@ -14,8 +14,7 @@ void Database::initialize() {
   /*
   check the current directory for the existence of 2 files
   facultyTable and studentTable
-  if neither exist, initialize as new.
-  if only one exists, remove references
+  if either doesn't exist, initialize both tables as blank.
   */
   //ifstream inputFile;
 
@@ -50,6 +49,7 @@ void Database::initialize() {
         cout << newFac << endl;
         //ADD THE NEW FACULTY MEMBER TO THE TABLE
         masterFaculty.insert(newFac);
+        noFaculty = false;
       }
     }
     catch (const ifstream::failure& e) { //should catch a fail bit if trying to read past eof
@@ -73,7 +73,7 @@ void Database::initialize() {
   // Student Table begin //
   ifstream studentStream;
   studentStream.open("studentTable");
-  bool noStudent = false;
+  bool noStudent = true;
 
   if(studentStream.is_open()) {
     string fileString = "";
@@ -92,10 +92,11 @@ void Database::initialize() {
         newStu.gpa = stod(fileString);
         getline(studentStream, fileString); //get the advisor ID
         newStu.advisorID = stoi(fileString);
-
+        cout << "here.";
         cout << newStu << endl;
         //ADD THE NEW STUDENT TO THE TABLE
         masterStudent.insert(newStu);
+        noStudent = false;
       }
     }
     catch (const ifstream::failure& e) { //should catch a fail bit if trying to read past eof
@@ -117,7 +118,9 @@ void Database::initialize() {
 
   //check if there were any problems with either the faculty or student table
   //if so, clear BOTH tables.
-  if (noStudent && noFaculty) {
+  cout << noStudent << endl;
+  cout << noFaculty << endl;
+  if (noStudent || noFaculty) {
     cout << "Error reading from files. Starting with blank tables." << endl;
     masterFaculty.recursiveDelete(masterFaculty.getRoot());
     masterStudent.recursiveDelete(masterStudent.getRoot());
@@ -448,6 +451,10 @@ void Database::changeAdvisor() {
 
         //update the student's advisor number
         theStudent->advisorID = aID;
+        cout << "Done." << endl;
+      }
+      else {
+        cout << "That faculty member is not in the system." << endl;
       }
     }
     else {
