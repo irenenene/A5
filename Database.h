@@ -5,6 +5,8 @@
 #include "Student.h"
 #include "Faculty.h"
 #include "BST.h"
+#include "GenStack.h"
+#include "Command.h"
 
 #include <iostream>
 
@@ -14,6 +16,7 @@ class Database {
 public:
   BST<Student> masterStudent;
   BST<Faculty> masterFaculty;
+  GenStack<Command> commands;
 
   Database();
   //~Database();
@@ -31,6 +34,7 @@ public:
   void deleteFaculty();
   void changeAdvisor();
   void removeAdvisee();
+  void rollback();
   //void readFromFile();
   //void writeToFile();
 

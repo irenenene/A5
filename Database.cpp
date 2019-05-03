@@ -1,3 +1,12 @@
+/*
+Irene Liu
+irliu@chapman.edu
+2313260
+CPSC 350-02
+Assignment 5
+
+Contains the database implementation and methods for user interaction
+*/
 #include "Database.h"
 #include <iostream>
 #include <fstream>
@@ -271,6 +280,11 @@ void Database::addStudent() {
       Student *newStudent = new Student(sName, sID, sLevel, sMajor, sGPA, 0);
       masterStudent.insert(*newStudent);
       cout << "Done." << endl;
+
+      //for rollback
+      Command c(7, *newStudent);
+      commands.push(c);
+
       delete newStudent;
     }
     else {
@@ -336,6 +350,10 @@ void Database::deleteStudent() {
         }
       }
 
+      //for rollback
+      Command c(8, *theStudent);
+      commands.push(c);
+
       masterStudent.deleteNode(*theStudent);
       cout << "Done." << endl;
     }
@@ -369,6 +387,11 @@ void Database::addFaculty() {
 
       Faculty *newFaculty = new Faculty(name, aID, level, department);
       masterFaculty.insert(*newFaculty);
+
+      //for rollback
+      Command c(9, *newFaculty);
+      commands.push(c);
+
       cout << "Done." << endl;
       delete newFaculty;
     }
@@ -403,6 +426,10 @@ void Database::deleteFaculty() {
           theStudent->advisorID = 0;
         }
       }
+
+      //for rollback
+      Command c(10, *theFaculty);
+      commands.push(c);
 
       masterFaculty.deleteNode(*theFaculty);
       cout << "Done." << endl;
@@ -555,7 +582,7 @@ void Database::mainMenu() {
     removeAdvisee();
   }
   else if(userInput == "13") {
-    //rollback();
+    rollback();
   }
   else if(userInput == "14") {
     isDone = true;
@@ -576,5 +603,51 @@ void Database::mainMenu() {
   }
   else {
     cout << "You did not make a valid selection." << endl;
+  }
+}
+
+void Database::rollback() {
+  bool hasCommand = true;
+  Command lastCommand;
+  try {
+    lastCommand = commands.pop();
+  }
+  catch (const GenStack<Command>::EmptyStackException &e) {
+    cout << "No commands to roll back." << endl;
+    hasCommand = false;
+  }
+
+  if(hasCommand) {
+    if(lastCommand.num == 7) { //undo add student
+      cout << "Undo: Add" << endl;
+      masterStudent.deleteNode(lastCommand.s);
+    }
+    else if(lastCommand.num == 8) { //undo delete student
+      cout << "Undo: Delete" << endl;
+      masterStudent.insert(lastCommand.s);
+
+      if(lastCommand.s.advisorID > 0) { //if the student had an advisor
+        //update the advisor with the student.
+        Faculty *oldAdvisor = findByFID(lastCommand.s.advisorID);
+        oldAdvisor->advisees.insert(lastCommand.s.id);
+      }
+    }
+    else if(lastCommand.num == 9) { //undo add Faculty
+      cout << "Undo: Add" << endl;
+      masterFaculty.deleteNode(lastCommand.f);
+    }
+    else if(lastCommand.num == 10) { //undo delete Faculty
+      cout << "Undo: Delete" << endl;
+      masterFaculty.insert(lastCommand.f);
+
+      for( IntList::Iterator iter = lastCommand.f.advisees.begin(); iter != lastCommand.f.advisees.end(); iter++) {
+        //update advisor for each student
+        int sID = *iter;
+        Student* theStudent = findBySID(sID);
+        theStudent->advisorID = lastCommand.f.id;
+      }
+    }
+
+
   }
 }

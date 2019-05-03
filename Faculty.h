@@ -18,7 +18,7 @@ public:
   //~Faculty();
   string getInfo() const; //for console output
   string writeInfo() const; //for file output
-//  void write(ostream &outs);
+  //void write(ostream &outs);
   void read(ifstream &ins);
 
   int id;

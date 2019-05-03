@@ -1,3 +1,12 @@
+/*
+Irene Liu
+irliu@chapman.edu
+2313260
+CPSC 350-02
+Assignment 5
+
+Contains a generic Binary Search Tree implementation.
+*/
 #ifndef BST_H
 #define BST_H
 
@@ -264,8 +273,10 @@ bool BST<T>::deleteNode(T& d) {
 
       //update parent pointers
       cout << "Updating parent pointers for successor" << endl;
-      successor->left->parent = successor;
-      successor->right->parent = successor;
+      if(successor->left)
+        successor->left->parent = successor;
+      if(successor->right)
+        successor->right->parent = successor;
     }
 
     delete delNode;
