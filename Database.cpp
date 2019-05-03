@@ -476,6 +476,13 @@ void Database::changeAdvisor() {
           cout << "That student id is already in that faculty's advisee list" << endl;
         }
 
+        //for rollback
+        //NOTE: Rollback saves a copy of the student with the OLD advisor ID and then a copy of the NEW faculty member.
+        //This way, the rollback/command object can have a reference to all 3.
+        //It is also assumed that you can not change TO advisorID 0, but you can change FROM advisorID 0.
+        Command c(11, *theStudent, *theFaculty);
+        commands.push(c);
+
         //update the student's advisor number
         theStudent->advisorID = aID;
         cout << "Done." << endl;
@@ -518,6 +525,11 @@ void Database::removeAdvisee() {
         if(advisor->advisees.contains(sID)) { //if the student is in the advisor's list
           theStudent->advisorID = 0;
           advisor->advisees.remove(sID);
+
+          //for rollback
+          Command c(12, *theStudent, *advisor);
+          commands.push(c);
+
           cout << "Done." << endl;
         }
         else {
@@ -647,7 +659,37 @@ void Database::rollback() {
         theStudent->advisorID = lastCommand.f.id;
       }
     }
+    else if(lastCommand.num == 11) { //undo change advisor
+      cout << "Undo: Change Advisor" << endl;
+      //Remember that the Command obj's Student has the OLD advisor
+      //and Faculty is the NEW advisor.
 
+      //remove the advisee from the "new" advisor.
+      cout << "1" << endl;
+      Faculty *newAdv = findByFID(lastCommand.f.id);
+      cout << *newAdv << endl;
+      cout << "2" << endl;
+      newAdv->advisees.remove(lastCommand.s.id);
+      //add the student back to the "old" advisor.
+      Faculty *oldAdv = findByFID(lastCommand.s.advisorID);
+      if(oldAdv != NULL) { //if previous advisor wasn't "unassigned", then update
+      cout << "3" << endl;
+        oldAdv->advisees.insert(lastCommand.s.id);
+      }
+      //change the student's advisor ID.
+      Student *theStudent = findBySID(lastCommand.s.id);
+      cout << "4" << endl;
+      theStudent->advisorID = lastCommand.s.advisorID;
+    }
+    else if(lastCommand.num == 12) { //undo remove advisee
+      cout << "Undo: Remove advisee" << endl;
+      //change the student's advisor ID
+      Student *theStudent = findBySID(lastCommand.s.id);
+      theStudent->advisorID = lastCommand.f.id;
+      //add student back to the advisor's list
+      Faculty *theFaculty = findByFID(lastCommand.f.id);
+      theFaculty->advisees.insert(lastCommand.s.id);
+    }
 
   }
 }

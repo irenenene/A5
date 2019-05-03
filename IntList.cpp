@@ -73,29 +73,33 @@ void IntList::insert(int d) {
 }
 
 void IntList::remove(int d) {
-  if(!isEmpty())
+  if(!isEmpty() && contains(d))
   {
-    if(size == 1) {
-      delete start;
-      start = nullptr;
-      size--;
-    }
-    else {
-      IntNode *curr = start;
-      IntNode *temp = nullptr;
+    IntNode *curr = start;
+    IntNode *prev = curr;
 
-      while (curr != nullptr) {
-        if(curr->data != d) {
-          temp = curr;
-          curr = curr->next;
-        }
-        else { //data was found
-          temp->next = curr->next;
+    while(curr != nullptr) {
+      if(curr->data == d) { //if curr is the node to delete
+        //check if it's the start
+        if(curr == start) {
+          if(size == 1)
+            start = nullptr;
+          else
+            start = curr->next;
           delete curr;
           size--;
           break;
         }
-      } //traversed entire list without finding
+        else {
+          prev->next = curr->next;
+          delete curr;
+          size--;
+          break;
+        }
+      }
+
+      prev = curr;
+      curr = curr->next;
     }
   }
 }

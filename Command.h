@@ -10,6 +10,8 @@ public:
     //~Command();
     Command(int comm, Student& theStudent): num(comm), s(theStudent) {};
     Command(int comm, Faculty& theFac): num(comm), f(theFac) {};
+    Command(int comm, Student& theStudent, Faculty& theFac) :
+      num(comm), s(theStudent), f(theFac) {};
 
     Student s;
     Faculty f;
