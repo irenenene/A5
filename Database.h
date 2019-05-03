@@ -35,8 +35,6 @@ public:
   void changeAdvisor();
   void removeAdvisee();
   void rollback();
-  //void readFromFile();
-  //void writeToFile();
 
   //helper methods utilizing the BST search
   Student* findBySID(int i);

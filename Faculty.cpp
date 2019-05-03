@@ -91,7 +91,7 @@ void Faculty::read(ifstream &ins) {
     getline(ins, inputString);
     int numAdvisees = stoi(inputString);
     for(int i = 0; i < numAdvisees; i++) {
-      cout << "Adding a student." << endl;
+      //cout << "Adding a student." << endl;
       getline(ins, inputString);
       int tempSID = stoi(inputString);
       advisees.insert(tempSID);

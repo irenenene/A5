@@ -107,7 +107,7 @@ void IntList::remove(int d) {
 void IntList::printList() {
   cout << size << endl;
   if(!isEmpty()) {
-    cout << "inside the loop";
+    //cout << "inside the loop";
     IntNode * curr = start;
     //cout << "is it null?" << (curr == nullptr) << endl;
     while (curr != nullptr) {

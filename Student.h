@@ -14,7 +14,7 @@ public:
   Student(Student& other);
   Student(int i);
   Student(string n, int i, string l, string m, double g, int aID);
-//  ~Student();
+  //~Student();
   string getInfo() const;
   string writeInfo() const;
 

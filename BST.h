@@ -71,7 +71,7 @@ BST<T>::~BST() {
   //call recursive delete starting from root
   if(!isEmpty())
     recursiveDelete(root);
-  cout << "Deleting the tree" << endl;
+  //cout << "Deleting the tree" << endl;
 }
 
 template <class T>
@@ -91,7 +91,7 @@ void BST<T>::recursiveDelete(Node<T> *curr) {
   }
   if(curr != NULL) {
     //update the parent pointers
-    //not tested thoroughly b/c it is not used during normal program execution.
+    //this block was not tested thoroughly b/c it is not used during normal program execution.
     if(curr->parent) { //if curr has a parent.
       //check if curr is a left or right child
       if(curr->parent->right == curr) { //if right child
@@ -135,12 +135,12 @@ bool BST<T>::contains(T& d) {
 
 template <class T>
 bool BST<T>::insert(T& d) {
-  cout << "inserting into the BST" << endl;
+  //cout << "inserting into the BST" << endl;
   if (contains(d)) //abort if the tree already contains the key
     return false;
 
   Node<T> *newNode = new Node<T>(d);
-  cout << "after new Node" << endl;
+  //cout << "after new Node" << endl;
   if(isEmpty()) {
     root = newNode;
     return true;
@@ -222,7 +222,7 @@ bool BST<T>::deleteNode(T& d) {
   else { //start here
     if(!delNode->left && !delNode->right) { //if leaf node
       if(delNode == root) {
-        cout << "Deleting the root, no children." << endl;
+        //cout << "Deleting the root, no children." << endl;
         root = nullptr;
       }
       else if(delNode->parent->left == delNode) //else if delNode is the left child
@@ -261,7 +261,7 @@ bool BST<T>::deleteNode(T& d) {
 
       if(delNode == root)
       {
-        cout << "is root";
+        //cout << "is root";
         root = successor;
       }
       else if (delNode->parent->left == delNode)
@@ -272,7 +272,7 @@ bool BST<T>::deleteNode(T& d) {
       successor->left = delNode->left;
 
       //update parent pointers
-      cout << "Updating parent pointers for successor" << endl;
+      //cout << "Updating parent pointers for successor" << endl;
       if(successor->left)
         successor->left->parent = successor;
       if(successor->right)

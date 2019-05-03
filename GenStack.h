@@ -71,8 +71,13 @@ GenStack<T>::~GenStack()
 template<class T>
 void GenStack<T>::push(T& data)
 {
-  if (isFull())
-    growArray();
+  if (isFull()) {
+    for (int i = 0; i < ARR_SIZE-1; i++) {
+      stackArray[i] = stackArray[i+1];
+    }
+    size--;
+  }
+    //growArray();
   stackArray[size++] = data;
 }
 

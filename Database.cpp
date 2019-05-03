@@ -25,7 +25,6 @@ void Database::initialize() {
   facultyTable and studentTable
   if either doesn't exist, initialize both tables as blank.
   */
-  //ifstream inputFile;
 
   // Faculty Table begin //
   ifstream facultyStream;
@@ -49,13 +48,13 @@ void Database::initialize() {
         int numAdv = stoi(fileIn);
 
         for(int i = 0; i < numAdv; i++) { //add studentID to advisees list
-          cout << "Adding a student." << endl;
+          //cout << "Adding a student." << endl;
           getline(facultyStream, fileIn);
           int tempSID = stoi(fileIn);
           newFac.advisees.insert(tempSID);
         }
 
-        cout << newFac << endl;
+        //cout << newFac << endl;
         //ADD THE NEW FACULTY MEMBER TO THE TABLE
         masterFaculty.insert(newFac);
         noFaculty = false;
@@ -101,8 +100,7 @@ void Database::initialize() {
         newStu.gpa = stod(fileString);
         getline(studentStream, fileString); //get the advisor ID
         newStu.advisorID = stoi(fileString);
-        cout << "here.";
-        cout << newStu << endl;
+
         //ADD THE NEW STUDENT TO THE TABLE
         masterStudent.insert(newStu);
         noStudent = false;
@@ -127,8 +125,8 @@ void Database::initialize() {
 
   //check if there were any problems with either the faculty or student table
   //if so, clear BOTH tables.
-  cout << noStudent << endl;
-  cout << noFaculty << endl;
+  //cout << noStudent << endl;
+  //cout << noFaculty << endl;
   if (noStudent || noFaculty) {
     cout << "Error reading from files. Starting with blank tables." << endl;
     masterFaculty.recursiveDelete(masterFaculty.getRoot());
@@ -187,7 +185,7 @@ void Database::findFaculty() {
     if(found != NULL) {
       cout << "Found a faculty member with id: " << id << endl;
       cout << *found << endl;
-      found->advisees.printList(); //DEBUGGING
+      //found->advisees.printList(); //DEBUGGING
     }
     else
       cout << "Could not find a faculty member with id: " << id << endl;
@@ -665,20 +663,16 @@ void Database::rollback() {
       //and Faculty is the NEW advisor.
 
       //remove the advisee from the "new" advisor.
-      cout << "1" << endl;
       Faculty *newAdv = findByFID(lastCommand.f.id);
       cout << *newAdv << endl;
-      cout << "2" << endl;
       newAdv->advisees.remove(lastCommand.s.id);
       //add the student back to the "old" advisor.
       Faculty *oldAdv = findByFID(lastCommand.s.advisorID);
       if(oldAdv != NULL) { //if previous advisor wasn't "unassigned", then update
-      cout << "3" << endl;
         oldAdv->advisees.insert(lastCommand.s.id);
       }
       //change the student's advisor ID.
       Student *theStudent = findBySID(lastCommand.s.id);
-      cout << "4" << endl;
       theStudent->advisorID = lastCommand.s.advisorID;
     }
     else if(lastCommand.num == 12) { //undo remove advisee
